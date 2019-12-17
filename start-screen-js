@@ -1,0 +1,53 @@
+let x = 175;
+let y = 0;
+
+let curentScene = 1;
+
+function setup() {
+  createCanvas(400, 400);
+
+}
+
+function draw() {
+  if (curentScene === 1) {
+    drawScene1();
+  } else if (curentScene===2) {
+    drawScene2();
+  }
+  
+}
+
+let drawScene1 = function() {
+  curentScene = 1;
+  background(0);
+  //rect will be replaced with logo
+  fill(255);
+  rect(x, y, 50, 50);
+  if (y < 175) {
+    y++;
+  }
+  if (y === 175){
+    fill(255,166,2);
+    textSize(20);
+   text("press enter",150,250) 
+  }
+}
+
+let drawScene2 = function() {
+  curentScene = 2;
+  background(0, 0, 175);
+  fill(0,100,0)
+  rect(0, 350, 400, 50);
+  //logo
+ rect(x,y,50,50)
+  if(y<350){
+  x++
+  y++}
+  fill(249,166,2)
+  textSize(25);
+    text("the amazing cashventure!",60,30);
+}
+
+keyPressed = function(){
+  curentScene++;
+}
