@@ -1,19 +1,36 @@
 //sketch.js
+
 let person;
 let x = 50;
 let block;
 let two;
 let dollar;
-let loonie;
-
+let gold;
+//let pForm=[];
+let mainGuy;
 
 function setup() {
+ mainGuy = loadImage("assets/mainGuy.png");
+  
   createCanvas(400, 400);
-  person = new Person();
+  person = new Person(mainGuy);
   block = new platform(300, 300, 50, 100);
   level = new platform(450,200,75,25);  
-  dollar = new money(309, 275);
-  loonie = new coin(100,100);
+  dollar = new blueMoney(309, 275);
+  gold = new loonie(490,180);
+  plat = new platform(560, 300, 100,25);
+  lePooPoo = new platform(1100, 325, 75, 75);
+  pleb1 = new nickel(900, 375);
+  pleb2 = new nickel(925,320);
+  pleb3 = new nickel(960, 255);
+  pleb4 = new nickel(1000, 320);
+  pont = new bridge(1175, 325, 150, 25);
+  
+  //for(let i=0; i<10; i++){
+    //pForm[i]= new platform(random(0,620),random(0,325),random(75,100),random(25,75));
+  //}
+  
+
 
 
 
@@ -49,20 +66,40 @@ function draw() {
   person.update();
   person.edges(block);
   person.edges(level);
-  person.display(dollar);
-  person.display(loonie);
+  person.edges(plat);
+  person.edges(lePooPoo);
+  person.edges(pont);
+  person.display();
+  /*person.display(dollar);
+  gold.display(gold);
+  person.display(pleb1); 
+  person.display(pleb2);
+  person.display(pleb3);
+  person.display(pleb4);*/
   //terrain
-  block.display(300, 300, 50, 100);
-  level.display(100, 100, 50,100);
+  block.display();
+  level.display();
+  plat.display();
+  lePooPoo.display();
+  pont.display();
   //money
   dollar.display(person);
-  loonie.display(person);
+  gold.display(person);
+  pleb1.display(person); 
+  pleb2.display(person);
+  pleb3.display(person);
+  pleb4.display(person);
   //counter.display(dollar);
+  //for(let i=0; i<pForm.length; i++){
+    //pForm[i].display();
+    //person.edges(pForm[i]);
+ // }
 
 
 
-} 
-//index.html
+}
+
+<--!index.html-->
 
 
 <html>
@@ -72,17 +109,21 @@ function draw() {
 
   <!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
   <script language="javascript" type="text/javascript" src="libraries/p5.min.js"></script>
-  <script language="javascript" type="text/javascript" src="coin.js"></script>
-  <script language="javascript" type="text/javascript" src="money.js"></script>
+  <script language="javascript" type="text/javascript" src="blueMoney.js"></script>
+  <script language="javascript" type="text/javascript" src="bridge.js"></script>
+  <script language="javascript" type="text/javascript" src="loonie.js"></script>
+  <script language="javascript" type="text/javascript" src="nickel.js"></script>
   <script language="javascript" type="text/javascript" src="person.js"></script>
   <script language="javascript" type="text/javascript" src="platform.js"></script>
-  <script language="javascript" type="text/javascript" src="p5js-temp-the_newer_sketch6823088133607297642.js"></script>
+  <script language="javascript" type="text/javascript" src="the_new_newest_sketch.js"></script>
   <!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->
  <script src="sketch.js"></script>
     <script src="person.js"></script>
     <script src="platform.js"></script>
-    <script src="money.js"></script>
-    <script src="coin.js"></script>
+    <script src="blueMoney.js"></script>
+    <script src="loonie.js"></script>
+    <script src="bridge.js"></script>
+    <script src="nickel.js"></script>
     <!--script src="counter.js"></script>-->
 
   <!-- This line removes any default padding and style.
@@ -95,6 +136,7 @@ function draw() {
 </html>
 
 style.css
+
 /*makes some style :)*/
 html,
 body {
@@ -107,13 +149,14 @@ canvas {
 }
 
 //person.js
+
 // makes the person
-function Person(x, y, m) {
+function Person(/*x,y,m*/ img) {
   this.pos = createVector(50, height);
   this.vel = createVector(0, 0);
   this.acc = createVector(0, 8);
-  
   this.score =0;
+  this.pic = img;
 
 
   this.applyForce = function(force) {
@@ -127,47 +170,34 @@ function Person(x, y, m) {
   this.display = function(bill) {
     fill(255);
     stroke(255);
-    rect(this.pos.x, this.pos.y - 53, 20, 50);
+    image(this.pic, this.pos.x - 25, this.pos.y - 100, 50,100);
+    //rect(this.pos.x, this.pos.y - 53, 20, 50);
   // the score counter
    this.count=this.score;
     this.x = person.x + 350;
     this.y = person.y - 345;
-    text(this.score + " $", this.pos.x-30, this.pos.y-100);
+    text(floor(this.score/100) + "." + this.score%100, this.pos.x-30, this.pos.y-100);
     //this.display = function() {
     //  fill(100);
     //  text(bill.count + " $", this.x, this.y);
     //};
   };
-    //lets him walk on platforms
+    //lets him walk on platforms and the bridge
     this.edges = function(stage) {
       if (this.pos.y > height) {
         this.vel.y *= -0.5;
         this.pos.y = height;
       }
-      if (this.pos.y > stage.y && this.pos.x > stage.x && this.pos.x < stage.x + 50 && this.vel.y > 0 && this.pos.y < stage.y + 50) {
+      if (this.pos.y > stage.y && this.pos.x > stage.x && this.pos.x < stage.x + stage.xS && this.vel.y > 0 && this.pos.y < stage.y + stage.yS) {
         this.vel.y = 0;
         this.pos.y = stage.y;
       }
     };
   }
   
-//platform.js
-//creates the platform
-function platform(x, y, xS, yS) {
-  this.x = x
-  this.y = y
-  this.xS = xS
-  this.yS = yS
+//blueMoney.js
 
-  this.display = function() {
-    fill(150, 255, 50)
-    rect(this.x, this.y, this.xS, this.yS)
-  }
-
-}
-
-//money.js
-function money(x, y) {
+function blueMoney(x, y) {
   this.x = x;
   this.y = y;
   this.col= color(100, 250, 139);
@@ -181,11 +211,15 @@ function money(x, y) {
     // print(person.pos.x + "person x = money x" + this.x );
     //print(person.pos.y + "person x = money x" + this.y );
 
+
+
+
+
     if ((person.pos.x < this.x + 35 && person.pos.x > this.x && person.pos.y  < this.y + 30)&&this.dead) {
       print("is true");
       this.col=color(200, 200, 200);
       this.dead = false;
-      person.score += 5;
+      person.score += 500;
       this.x-=400;
       this.y-=400;
     } else {
@@ -195,9 +229,11 @@ function money(x, y) {
     }
   };
 }
-//coin.js
-//makes the coins
-function coin(x, y) {
+
+//loonie.js
+
+//will make the loonie
+function loonie(x, y) {
   this.x = x;
   this.y = y;
   this.col= color(100,250,139);
@@ -205,8 +241,54 @@ function coin(x, y) {
   this.count = 0;
 
     this.display = function(person) {
-    fill(100, 200, 0);
-      ellipse(this.x, this.y, 50, 50);
+    fill(212, 175, 55);
+      ellipse(this.x, this.y, 40, 40);
+
+
+      if ((person.pos.x < this.x + 35 && person.pos.x > this.x && person.pos.y  < this.y + 30)&&this.dead) {
+      print("is true");
+      this.col=color(200, 200, 200);
+      this.dead = false;
+      person.score += 100;
+      this.x-=400;
+      this.y-=400;
+          }else{
+      this.col=color(0,0,0);
+          fill(this.col);
+    
+    }
+  };
+}
+
+//bridge.js
+
+//creates the bridge
+function bridge(x, y, xS, yS) {
+  this.x = x;
+  this.y = y;
+  this.xS = xS;
+  this.yS = yS;
+
+  this.display = function() {
+    fill(150, 255, 50);
+    rect(this.x, this.y, this.xS, this.yS);
+  };
+
+}
+
+nickel.js
+
+//will make the nickels
+function nickel(x, y) {
+  this.x = x;
+  this.y = y;
+  this.col= color(100,250,139);
+  this.dead = true;
+  this.count = 0;
+
+    this.display = function(person) {
+    fill(170, 169, 173);
+      ellipse(this.x, this.y, 25, 25);
 
 
       if ((person.pos.x < this.x + 35 && person.pos.x > this.x && person.pos.y  < this.y + 30)&&this.dead) {
@@ -222,4 +304,20 @@ function coin(x, y) {
     
     }
   };
+}
+
+platform.js
+
+//creates the platforms
+function platform(x, y, xS, yS) {
+  this.x = x;
+  this.y = y;
+  this.xS = xS;
+  this.yS = yS;
+
+  this.display = function() {
+    fill(150, 255, 50);
+    rect(this.x, this.y, this.xS, this.yS);
+  };
+
 }
