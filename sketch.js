@@ -8,7 +8,7 @@ let gold;
 let mainGuy;
 
 function setup() {
- mainGuy = loadImage("mainGuy.png");
+ mainGuy = loadImage("main guy.png");
   
   createCanvas(400, 400);
   person = new Person(mainGuy);
