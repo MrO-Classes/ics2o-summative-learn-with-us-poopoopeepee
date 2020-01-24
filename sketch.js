@@ -10,7 +10,6 @@ let rail;
 
 function setup() {
  mainGuy = loadImage("main guy.png");
- rail = loadImage ("bridge.png")
   
   createCanvas(400, 400);
   person = new Person(mainGuy);
