@@ -38,6 +38,7 @@ function Person(/*x,y,m*/ img) {
       }
       if (this.pos.y > stage.y && this.pos.x > stage.x && this.pos.x < stage.x + stage.xS && this.vel.y > 0 && this.pos.y < stage.y + stage.yS) {
         this.vel.y = 0;
+          this.vel.x = 0;
         this.pos.y = stage.y;
       }
     };
